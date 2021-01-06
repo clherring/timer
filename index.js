@@ -8,17 +8,19 @@ const circle = document.querySelector("circle");
 const perimeter = circle.getAttribute("r") * 2 * Math.PI;
 circle.setAttribute("stroke-dasharray", perimeter);
 
-let currentOffset = 0;
+let duration;
 //create instance of timer with elements selected
 //timer class will automatically set up event listener for us
 const timer = new Timer(durationInput, startButton, pauseButton, {
-  onStart() {
-    console.log("Timer started");
+  onStart(totalDuration) {
+    duration = totalDuration;
   },
 
-  onTick() {
-    circle.setAttribute("stroke-dashoffset", currentOffset);
-    currentOffset = currentOffset - 50;
+  onTick(timeRemaining) {
+    circle.setAttribute(
+      "stroke-dashoffset",
+      (perimeter * timeRemaining) / duration - perimeter
+    );
   },
   onComplete() {
     console.log("Timer is completed");
